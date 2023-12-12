@@ -3,7 +3,7 @@
 - 👀 I’m also interested in Web Development.
 - 🌱 I’m currently learning Data Structures and Algorithms.
 - 📫 How to reach me - prasadtanisha1072@gmail.com
-- 🚀 Skills
+- 🚀 Skills :
 - Programming Languages: C,C++
 - Web Development:HTML,CSS,JS
 
