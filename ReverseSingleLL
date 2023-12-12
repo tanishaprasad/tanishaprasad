@@ -1,0 +1,109 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+ struct node{
+    int data;
+    struct node *next;
+};
+
+struct node *print(struct node *head)
+{   int count=0;
+    if (head == NULL)
+    {
+        printf("List is now empty.\n");
+        return;
+    }
+
+    struct node *temp = head;
+    while (temp != NULL){
+        printf("%d -> ", temp->data);
+        temp = temp->next;
+        count++;
+    }
+    printf("NULL\n");
+    printf("Total no. of elements is:%d",count);
+}
+
+
+struct node * add_at_end(struct node *head, int data)
+{
+    struct node *newNode =malloc(sizeof(struct node));
+    newNode->data = data;
+    newNode->next = NULL;
+
+    if (head == NULL)
+    {
+        // If the list is empty, the new node created point becomes the head(first node).
+        head = newNode;
+    }
+    else
+    {
+        struct node *temp = head;
+        while (temp->next != NULL)
+        {
+            temp = temp->next;
+        }
+        // Attach the new node to the last node.
+        temp->next = newNode;
+    }
+
+    return head;
+}
+
+struct node* reverse(struct node *head){
+
+    if(head == NULL || head->next == NULL){
+        return head;
+    }
+    struct node *prev=NULL;
+    struct node *next=NULL;
+
+    while(head!=NULL){
+
+    next=head->next;
+    head->next=prev;
+    prev=head;
+    head=next;
+
+   }
+    head=prev;
+    return head;
+}
+
+
+int main(){
+    struct node *head = malloc(sizeof(struct node));
+    head=NULL;
+    int data;
+    char c;
+
+    while (1)
+    {
+        printf("Insert the data you want to add in linked list : ");
+        if(scanf("%d", &data) != 1){
+            printf("\n*** ERROR!!!!! Please Enter a integer value only **** \n");
+            while (getchar() != '\n'); // Clear the input buffer
+            continue;
+        }
+        head = add_at_end(head, data);
+        printf("Linked list after insertion : ");
+        print(head);
+        ask:
+        printf("\nDo you want to insert more nodes (y/n) : ");
+        scanf(" %c",&c);
+        if(c == 'n'){
+            break;
+        }
+        else if(c != 'y'){
+            printf("\n***** ERROR!!!! Please Enter a valid character (y/n) ****** \n");
+            goto ask;
+        }
+    }
+    printf("\n*** Linked list before reversal***\n");
+    print(head);
+    printf("\n***Linked list obtained after reversing*****\n");
+    head = reverse(head);
+    print(head);
+    return 0;
+}
+
