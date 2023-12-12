@@ -1,0 +1,803 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct node
+{
+    int info;
+    struct node *next;
+} node;
+
+void MAINMENU();
+
+//  ----------------- Singular Linked List --------------------------------
+
+void display(node *head)
+{
+    if (head == NULL)
+    {
+        printf("List is empty.\n");
+        return;
+    }
+
+    node *temp = head;
+    while (temp != NULL)
+    {
+        printf("%d -> ", temp->info);
+        temp = temp->next;
+    }
+    printf("NULL\n");
+}
+
+node *endinsert(node *head, int data)
+{
+    node *newNode = (node *)malloc(sizeof(node));
+    newNode->info = data;
+    newNode->next = NULL;
+
+    if (head == NULL)
+    {
+        // If the list is empty, the new node becomes the head.
+        head = newNode;
+    }
+    else
+    {
+        node *temp = head;
+        while (temp->next != NULL)
+        {
+            temp = temp->next;
+        }
+        // Attach the new node to the last node.
+        temp->next = newNode;
+    }
+
+    return head;
+}
+
+node *begininsert(node *head, int data)
+{
+    node *newNode = (node *)malloc(sizeof(node));
+    newNode->info = data;
+
+    if (head == NULL)
+    {
+        // If the list is empty, the new node becomes the head.
+        newNode->next = NULL;
+        head = newNode;
+    }
+    else
+    {
+        newNode->next = head;
+        head = newNode;
+    }
+
+    return head;
+}
+
+node *locinsert(node *head, int data, int loc)
+{
+    if (loc < 0)
+    {
+        printf("\nInvalid Position\n");
+        return head;
+    }
+    else if (loc == 0)
+    {
+        head = begininsert(head, data);
+        return head;
+    }
+
+    node *newNode = (node *)malloc(sizeof(node));
+    newNode->info = data;
+
+    if (head == NULL)
+    {
+        if (loc > 0)
+        {
+            printf("\nInvalid Position\n");
+            return head;
+        }
+        // If the list is empty, the new node becomes the head.
+        newNode->next = NULL;
+        head = newNode;
+    }
+    else
+    {
+        int count = 0;
+        node *temp = head;
+        while (temp!= NULL && count < loc - 1)
+        {
+            temp = temp->next;
+            count++;
+        }
+        if (temp == NULL)
+        {
+            printf("Invalid position.\n");
+            return head;
+        }
+        newNode->next = temp->next;
+        temp->next = newNode;
+    }
+
+    return head;
+}
+
+node *enddelete(node *head)
+{
+    if (head == NULL)
+    {
+        printf("List is empty!!\n");
+        return head;
+    }
+    else if (head->next == NULL)
+    {
+        free(head);
+        head = NULL;
+    }
+    else
+    {
+        node *temp = head;
+        while (temp->next->next != NULL)
+        {
+            temp = temp->next;
+        }
+        free(temp->next);
+        temp->next = NULL;
+    }
+
+    return head;
+}
+
+node *begindelete(node *head)
+{
+    if (head == NULL)
+    {
+        printf("List is empty!!\n");
+        return head;
+    }
+    else if (head->next == NULL)
+    {
+        free(head);
+        head = NULL;
+    }
+    else
+    {
+        node *temp = head;
+        head = temp->next;
+        free(temp);
+    }
+
+    return head;
+}
+
+node *locdelete(node *head, int loc)
+{
+    if (loc < 0)
+    {
+        printf("\nInvalid Position\n");
+        return head;
+    }
+    else if (loc == 0)
+    {
+        head = begindelete(head);
+        return head;
+    }
+
+    if (head == NULL)
+    {
+        printf("List is empty!!\n");
+        return head;
+    }
+    else
+    {
+        int count = 0;
+        node *prev = head;
+        while (prev != NULL && count < loc - 1)
+        {
+            prev = prev->next;
+            count++;
+        }
+        if (prev == NULL || prev->next == NULL)
+        {
+            printf("Invalid position.\n");
+            return head;
+        }
+        node *curr = prev->next;
+        prev->next = curr->next;
+        free(curr);
+    }
+
+    return head;
+}
+
+//  <<<----------------- Circular Singular Linked List -------------------------------->>>
+
+void displaycircular(node *head)
+{
+    if (head == NULL)
+    {
+        printf("List is empty.\n");
+        return;
+    }
+
+    node *current = head;
+
+    do
+    {
+        printf("%d -> ", current->info);
+        current = current->next;
+    } while (current != head);
+
+    printf("Head\n");
+
+}
+
+node *beginInsert(node *head, int data)
+{
+    node *newNode = (node *)malloc(sizeof(node));
+    newNode->info = data;
+
+    if (head == NULL)
+    {
+        // If the list is empty, the new node becomes the head.
+        newNode->next = newNode;
+        head = newNode;
+    }
+    else
+    {
+        node *temp = head;
+        while (temp->next != head)
+        {
+            temp = temp->next;
+        }
+        newNode->next = head;
+        temp->next = newNode;
+        head = newNode;
+    }
+
+    return head;
+}
+
+node *endInsert(node *head, int data)
+{
+    node *newNode = (node *)malloc(sizeof(node));
+    newNode->info = data;
+
+    if (head == NULL)
+    {
+        // If the list is empty, the new node becomes the head.
+        head = newNode;
+        newNode->next = head;
+    }
+    else
+    {
+        node *temp = head;
+        while (temp->next != head)
+        {
+            temp = temp->next;
+        }
+        // Attach the new node to the last node.
+        temp->next = newNode;
+        newNode->next = head;
+    }
+
+    return head;
+}
+
+node *locInsert(node *head, int data, int loc)
+{
+    if (loc < 0)
+    {
+        printf("\nInvalid Position\n");
+        return head;
+    }
+    else if (loc == 0)
+    {
+        // Insert at the beginning if location is 0.
+        return beginInsert(head, data);
+    }
+
+    node *newNode = (node *)malloc(sizeof(node));
+    newNode->info = data;
+
+    if (head == NULL)
+    {
+        if (loc == 0)
+        {
+            // If the list is empty and location is 0, the new node becomes the head.
+            head = newNode;
+            newNode->next = head;
+        }
+        else
+        {
+            printf("\nInvalid Position\n");
+        }
+    }
+    else
+    {
+        int count = 0;
+        node *temp = head;
+
+        do
+        {
+            if (count == loc - 1)
+            {
+                newNode->next = temp->next;
+                temp->next = newNode;
+                return head;
+            }
+            temp = temp->next;
+            count++;
+        } while (temp != head);
+
+        printf("Invalid position.\n");
+    }
+
+    return head;
+}
+
+
+node *endDelete(node *head)
+{
+    if (head == NULL)
+    {
+        printf("List is empty!!\n");
+        return head;
+    }
+    else if (head->next == head)
+    {
+        free(head);
+        head = NULL;
+    }
+    else
+    {
+        node *temp = head;
+        while (temp->next->next != head)
+        {
+            temp = temp->next;
+        }
+        free(temp->next);
+        temp->next = head;
+    }
+
+    return head;
+}
+
+node *beginDelete(node *head)
+{
+    if (head == NULL)
+    {
+        printf("List is empty!!\n");
+        return head;
+    }
+    else if (head->next == head)
+    {
+        free(head);
+        head = NULL;
+    }
+    else
+    {
+        node *temp = head;
+        while (temp->next != head)
+        {
+            temp = temp->next;
+        }
+        temp->next = head->next;
+        free(head);
+        head = temp->next;
+
+    }
+
+    return head;
+}
+
+node *locDelete(node *head, int loc)
+{
+    if (loc < 0)
+    {
+        printf("\nInvalid Position\n");
+        return head;
+    }
+    else if (loc == 0)
+    {
+        // Delete the first node if location is 0.
+        return beginDelete(head);
+    }
+
+    if (head == NULL)
+    {
+        printf("List is empty!\n");
+        return head;
+    }
+
+    int count = 0;
+    node* prev = head;
+
+    do
+    {
+        if (count == loc - 1)
+        {
+            node *curr = prev->next;
+            prev->next = curr->next;
+
+            if (curr == head) {
+                printf("Invalid position.\n");
+                return head;
+            }
+
+            free(curr);
+            return head;
+        }
+        prev = prev->next;
+        count++;
+    } while (prev->next != head);
+
+    printf("Invalid position.\n");
+    return head;
+}
+
+
+
+
+//  <<<--------------------- Menu of Singular Linked List -------------------------------->>>
+
+void SLLMENU()
+{
+    node *head = (node *)malloc(sizeof(node));
+    head=NULL;
+    int choice, data, pos;
+    char c, pos_choice;
+    while (1)
+    {
+        printf("\nSingular Linked List Operations:\n\n");
+        printf("1. Insert at the beginning\n");
+        printf("2. Insert at the end\n");
+        printf("3. Insert at a specific location\n");
+        printf("4. Delete at the beginning\n");
+        printf("5. Delete at the end\n");
+        printf("6. Delete at a specific location\n");
+        printf("7. Display the list\n");
+        printf("8. Back to Main Menu\n");
+        printf("9. Exit\n");
+        printf("Enter your choice: ");
+        if(scanf("%d", &choice) != 1){
+            printf("\n*****Error! Please Enter an integer value ****** \n");
+            while (getchar() != '\n');
+            continue;
+        }
+
+
+        switch (choice)
+        {
+        case 1:
+            printf("Enter data to insert at the beginning: ");
+            if(scanf("%d", &data) != 1){
+                printf("\n*****Error! Please Enter a integer value ****** \n");
+                while (getchar() != '\n');
+                continue;
+            }
+            head = begininsert(head, data);
+            printf("SLL after insertion : ");
+            display(head);
+            break;
+        case 2:
+            printf("Enter data to insert at the end: ");
+            if(scanf("%d", &data) != 1){
+                printf("\n*****Error! Please Enter an integer value ****** \n");
+                while (getchar() != '\n');
+                continue;
+            }
+            head = endinsert(head, data);
+            printf("SLL after insertion : ");
+            display(head);
+            break;
+        case 3:
+        restart:
+            printf("Enter data to insert: ");
+            if(scanf("%d", &data) != 1){
+                printf("\n***** Error !Please Enter an integer value ****** \n");
+                while (getchar() != '\n');
+                continue;
+            }
+            printf("Enter the position to insert new node: ");
+            if(scanf("%d", &pos) != 1){
+                printf("\n***** Error! Please Enter an integer value ****** \n");
+                while (getchar() != '\n');
+                continue;
+            };
+            printf("Are you sure you want to insert node at %d position (y/n) : ", pos);
+            scanf(" %c", &pos_choice);
+            if (pos_choice == 'n')
+            {
+                printf("Re-nter position of node where you want to insert node now : ");
+                if(scanf("%d", &pos) != 1){
+                    printf("\n***** Error !Please Enter an integer value ****** \n");
+                    while (getchar() != '\n');
+                    continue;
+                };
+            }
+            else if (pos_choice != 'y')
+            {
+                printf("Invalid Input\n");
+                printf("Starting Again...\n");
+                goto restart;
+            }
+            head = locinsert(head, data, pos);
+            printf("SLL after insertion : ");
+            display(head);
+            break;
+        case 4:
+            head = begindelete(head);
+            printf("SLL after deletion : ");
+            display(head);
+            break;
+        case 5:
+            head = enddelete(head);
+            printf("SLL after deletion : ");
+            display(head);
+            break;
+        case 6:
+        deleteAgain:
+            printf("Enter the position to delete node : ");
+            if(scanf("%d", &pos) != 1){
+                printf("\n***** Error!Please Enter a integer value ****** \n");
+                while (getchar() != '\n');
+                continue;
+            }
+            printf("Are you sure you want to insert node at %d position (y/n) : ", pos);
+            scanf(" %c", &pos_choice);
+            if (pos_choice == 'n')
+            {
+                printf("Re-nter position of node where you want to delete node : ");
+                if(scanf(" %d", &pos) != 1){
+
+
+                    printf("\n*****Error! Please Enter a integer value ****** \n");
+                    while (getchar() != '\n');
+                    continue;
+                }
+            }
+            else if (pos_choice != 'y')
+            {
+                printf("Invalid Input\n");
+                printf("Starting Again...\n");
+                goto deleteAgain;
+            }
+            head = locdelete(head, pos);
+            printf("SLL after insertion : ");
+            display(head);
+            break;
+        case 7:
+            printf("\n Your Single Linked List is  : ");
+            display(head);
+            break;
+        case 8:
+            printf("Are you sure you want to go back to Main Menu?\n****Your Previous data will be lost**** (y/n): ");
+            scanf(" %c", &c);
+            if (c == 'y')
+                MAINMENU();
+            else if (c == 'n')
+                continue;
+            else
+                printf("\nInvalid Input!\n");
+            break;
+        case 9:
+            printf("Are you sure you want to exit program? (y/n) : ");
+            scanf(" %c", &c);
+            if (c == 'y')
+                exit(0);
+            else if (c != 'n')
+                printf("\nInvalid Input!\n");
+            break;
+        default:
+            printf("Invalid choice. Please try again.\n");
+        }
+    }
+}
+
+//  ---------------------- Menu of Circular Singular Linked List ------------------------------
+
+void CLLMENU()
+{
+    node *head = (node *)malloc(sizeof(node));
+    head = NULL;
+    int choice, data, pos;
+    char c, pos_choice;
+    while (1)
+    {
+        printf("\nCircular Singular Linked List Operations:\n\n");
+        printf("1. Insert at the beginning\n");
+        printf("2. Insert at the end\n");
+        printf("3. Insert at a specific location\n");
+        printf("4. Delete at the beginning\n");
+        printf("5. Delete at the end\n");
+        printf("6. Delete at a specific location\n");
+        printf("7. Display the list\n");
+        printf("8. Back to Main Menu\n");
+        printf("9. Exit\n");
+        printf("Enter your choice: ");
+        if(scanf("%d", &choice) != 1){
+            printf("\n***** Error!Please Enter a integer value ****** \n");
+            while (getchar() != '\n');
+            continue;
+        }
+
+        switch (choice)
+        {
+        case 1:
+            printf("Enter data to insert at the beginning: ");
+            if(scanf("%d", &data) != 1){
+                printf("\n*****Error! Please Enter a integer value ****** \n");
+                while (getchar() != '\n');
+                continue;
+            }
+            head = beginInsert(head, data);
+            printf("CLL after insertion : ");
+            displaycircular(head);
+            break;
+        case 2:
+            printf("Enter data to insert at the end: ");
+            if(scanf("%d", &data) != 1){
+                printf("\n***** Error!Please Enter a integer value ****** \n");
+                while (getchar() != '\n');
+                continue;
+            }
+            head = endInsert(head, data);
+            printf("CLL after insertion : ");
+            displaycircular(head);
+            break;
+        case 3:
+        restart:
+            printf("Enter data to insert: ");
+            if(scanf("%d", &data) != 1){
+                printf("\n*****Error! Please Enter a integer value ****** \n");
+                while (getchar() != '\n');
+                continue;
+            }
+            printf("Enter the position to insert the new node at at: ");
+            if(scanf("%d", &pos) != 1){
+                printf("\n***** Please Enter a integer value ****** \n");
+                while (getchar() != '\n');
+                continue;
+            }
+            printf("Are you sure you want to insert node at %d position (y/n) : ", pos);
+            scanf(" %c", &pos_choice);
+            if (pos_choice == 'n')
+            {
+                printf("Re-nter position of node where you want to insert node : ");
+                if(scanf(" %d", &pos) != 1){
+                    printf("\n*****Error! Please Enter a integer value ****** \n");
+                    while (getchar() != '\n');
+                    continue;
+                };
+            }
+            else if (pos_choice != 'y')
+            {
+                printf("Invalid Input :/\n");
+                printf("Starting Again...\n");
+                goto restart;
+            }
+            head = locInsert(head, data, pos);
+            printf("CLL after insertion : ");
+            displaycircular(head);
+            break;
+        case 4:
+            head = beginDelete(head);
+            printf("CLL after deletion : ");
+            displaycircular(head);
+            break;
+        case 5:
+            head = endDelete(head);
+            printf("CLL after deletion : ");
+            displaycircular(head);
+            break;
+        case 6:
+        del:
+            printf("Enter the position to delete node : ");
+            if(scanf("%d", &pos)!=1){
+                printf("\n*****Error! Please Enter a integer value ****** \n");
+                while (getchar() != '\n');
+                continue;
+            }
+            printf("Are you sure you want to insert node at %d position (y/n) : ", pos);
+            scanf(" %c", &pos_choice);
+            if (pos_choice == 'n')
+            {
+                printf("Re-nter position of node you want to delete  : ");
+                if(scanf(" %d", &pos) != 1){
+                    printf("\n***** Please Enter a integer value ****** \n");
+                    while (getchar() != '\n'); // Clear the input buffer
+                    continue;
+                }
+            }
+            else if (pos_choice != 'y')
+            {
+                printf("Invalid Input\n");
+                printf("Starting Again...\n");
+                goto del;
+            }
+            head = locDelete(head, pos);
+            printf("Nodes after insertion : ");
+            displaycircular(head);
+            break;
+        case 7:
+            printf("\n Your cicular Linked List is: ");
+            displaycircular(head);
+            break;
+        case 8:
+            printf("Are you sure you want to go back to Main Menu?\n**** Your previous data will be erased !! **** (y/n): ");
+            scanf(" %c", &c);
+            if (c == 'y')
+                MAINMENU();
+            else if (c == 'n')
+                continue;
+            else
+                printf("\nInvalid Input!\n");
+            break;
+        case 9:
+            printf("Are you sure you want to exit program? (y/n) : ");
+            scanf(" %c", &c);
+            if (c == 'y')
+                exit(0);
+            else if (c != 'n')
+                printf("\nInvalid Input!\n");
+            break;
+        default:
+            printf("Invalid choice. Please try again.\n");
+        }
+    }
+}
+
+//  <<<--------------------------- Main Menu ------------------------------>>>
+
+void MAINMENU()
+{
+
+    node *head = (node *)malloc(sizeof(node));
+    head = NULL;
+    int choice;
+    char c;
+
+    while (1)
+    {
+
+        printf("\n================================ Main Menu =============================\n");
+        printf("\nSelect type of linked list you want :\n");
+        printf("1. Singular Linked List\n");
+        printf("2. Circular Singular Linked List\n");
+        printf("3. Exit\n");
+        printf("Enter your choice: ");
+        if (scanf("%d", &choice) != 1)
+        {
+            printf("\n*****Error! Please Enter a integer value ****** \n");
+            while (getchar() != '\n');
+            continue;
+        }
+        switch (choice)
+        {
+        case 1:
+            SLLMENU();
+            break;
+        case 2:
+            CLLMENU();
+            break;
+        case 3:
+            printf("Are you sure you want to exit program? (y/n) : ");
+            scanf(" %c", &c);
+            if (c == 'y'){
+                printf("\n closing the program...\n");
+                exit(0);
+            }
+            else if (c != 'n')
+                printf("\n Oops !Invalid Input!\n");
+            break;
+        default:
+            printf("Invalid choice. Please try again.\n");
+        }
+    }
+}
+
+int main()
+{
+    MAINMENU();
+    return 0;
+}
