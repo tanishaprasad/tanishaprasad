@@ -1,6 +1,6 @@
 - 👋 Hello! I'm Tanisha Prasad, a passionate MCA (Software Engineering) student with a keen interest in Software Development. I am enthusiastic about learning and applying software engineering principles to solve real-world problems.
 
-- 👀 I’m also interested in Web Development.
+- 👀 I’m also interested in Web Development and Machine Learning.
 - 🌱 I’m currently learning Data Structures and Algorithms.
 - 📫 How to reach me - prasadtanisha1072@gmail.com
 - 🚀 Skills :
