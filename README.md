@@ -4,7 +4,7 @@
 - 🌱 I’m currently learning Data Structures and Algorithms.
 - 📫 How to reach me - prasadtanisha1072@gmail.com
 - 🚀 Skills :
-- Programming Languages: C,C++
+- Programming Languages: Java,C,C++
 - Web Development:HTML,CSS,JS
 
 <!---
